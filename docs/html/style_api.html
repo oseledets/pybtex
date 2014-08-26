@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>The Style API of Pybtex</title>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type"></meta>
+    <link href="display.css" rel="stylesheet" type="text/css"></link>
+    <link href="pygments.css" rel="stylesheet" type="text/css"></link>
+</head>
+<body>
+    <div id="main">
+
+        <h1>The Style API<span class="tail"> of Pybtex</span></h1>
+
+
+        <div id="toc">
+            <h2>Contents</h2>
+            <ul class="contents">
+    
+            <li><a href="#rich-text">Rich text</a></li>
+    
+            <li><a href="#template-language">Template language</a></li>
+    
+            <li><a href="#is-that-all">Is that all?</a></li>
+    
+            </ul>
+        </div>
+
+        <div id="content">
+            <p>Well, to tell the truth, the style API is still undergoing heavy development
+and is far from being finished yet.</p>
+<p>Here is what it looks like.</p>
+<div class="section" id="rich-text">
+<h2>Rich text</h2>
+<p>Pybtex was designed to be able to output bibliographies in multiple formats.
+It means that bibliograhy formatting functions can't just return things like
+<tt class="docutils literal">\emph{editor}</tt> or <tt class="docutils literal"><span class="pre">&lt;i&gt;journal&lt;/i&gt;</span></tt>. We have a simple language for
+producing formatted text:</p>
+<div class="sourcecode"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pybtex.richtext</span> <span class="kn">import</span> <span class="n">Text</span><span class="p">,</span> <span class="n">Tag</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pybtex.backends</span> <span class="kn">import</span> <span class="n">latex</span><span class="p">,</span> <span class="n">html</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">text</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="s">&#39;This is an example of a &#39;</span><span class="p">,</span> <span class="n">Tag</span><span class="p">(</span><span class="s">&#39;emph&#39;</span><span class="p">,</span> <span class="s">&#39;rich&#39;</span><span class="p">),</span> <span class="s">&#39; text.&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">text</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">Backend</span><span class="p">())</span>
+<span class="go">This is an example of a &lt;em&gt;rich&lt;/em&gt; text.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">text</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">latex</span><span class="o">.</span><span class="n">Backend</span><span class="p">())</span>
+<span class="go">This is an example of a \emph{rich} text.</span>
+</pre></div>
+</div>
+<div class="section" id="template-language">
+<h2>Template language</h2>
+<p>BibTeX uses has a simple stack oriented language for defining bibliography
+styles. This is what is inside of <tt class="docutils literal">.bst</tt> files.  For a Pythonic bibliography
+processor it is natural to use Python for writing styles. A Pybtex style file
+is basically a Python module containing a class named <tt class="docutils literal">Formatter</tt>. This
+class has methods like <tt class="docutils literal">format_article</tt>, <tt class="docutils literal">format_book</tt>, etc. They accept a
+bibliography entry (an instance of <tt class="docutils literal">pybtex.database.Entry</tt> class) and return a
+formatted entry (an instance of <tt class="docutils literal">pybtex.richtes.Text</tt>).</p>
+<div class="sourcecode"><pre><span class="kn">from</span> <span class="nn">pybtex.style.formatting</span> <span class="kn">import</span> <span class="n">BaseStyle</span>
+<span class="kn">from</span> <span class="nn">pybtex.richtext</span> <span class="kn">import</span> <span class="n">Text</span><span class="p">,</span> <span class="n">Tag</span>
+
+<span class="k">class</span> <span class="nc">MyStyle</span><span class="p">(</span><span class="n">BaseStyle</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">format_article</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Text</span><span class="p">(</span><span class="s">&#39;Article &#39;</span><span class="p">,</span> <span class="n">Tag</span><span class="p">(</span><span class="s">&#39;em&#39;</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s">&#39;title&#39;</span><span class="p">]))</span>
+</pre></div>
+<p>To make things easier we designed a simple template language:</p>
+<div class="sourcecode"><pre><span class="kn">from</span> <span class="nn">pybtex.style.formatting</span> <span class="kn">import</span> <span class="n">BaseStyle</span><span class="p">,</span> <span class="n">toplevel</span>
+<span class="kn">from</span> <span class="nn">pybtex.style.template</span> <span class="kn">import</span> <span class="n">field</span><span class="p">,</span> <span class="n">join</span><span class="p">,</span> <span class="n">optional</span>
+
+<span class="k">class</span> <span class="nc">MyStyle</span><span class="p">(</span><span class="n">BaseStyle</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">format_article</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s">&#39;volume&#39;</span><span class="p">]:</span>
+            <span class="n">volume_and_pages</span> <span class="o">=</span> <span class="n">join</span> <span class="p">[</span><span class="n">field</span><span class="p">(</span><span class="s">&#39;volume&#39;</span><span class="p">),</span> <span class="n">optional</span> <span class="p">[</span><span class="s">&#39;:&#39;</span><span class="p">,</span> <span class="n">pages</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">volume_and_pages</span> <span class="o">=</span> <span class="n">words</span> <span class="p">[</span><span class="s">&#39;pages&#39;</span><span class="p">,</span> <span class="n">optional</span> <span class="p">[</span><span class="n">pages</span><span class="p">]]</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="n">toplevel</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">format_names</span><span class="p">(</span><span class="s">&#39;author&#39;</span><span class="p">),</span>
+            <span class="n">sentence</span> <span class="p">[</span><span class="n">field</span><span class="p">(</span><span class="s">&#39;title&#39;</span><span class="p">)],</span>
+            <span class="n">sentence</span> <span class="p">[</span>
+                <span class="n">tag</span><span class="p">(</span><span class="s">&#39;emph&#39;</span><span class="p">)</span> <span class="p">[</span><span class="n">field</span><span class="p">(</span><span class="s">&#39;journal&#39;</span><span class="p">)],</span> <span class="n">volume_and_pages</span><span class="p">,</span> <span class="n">date</span><span class="p">],</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">format_data</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="is-that-all">
+<h2>Is that all?</h2>
+<p>More documentation will be written when our style API
+gets some form. Use the source for now.</p>
+</div>
+
+        </div>
+        <div id="footer">
+            <hr />
+            
+            <div id="footer-left">
+
+                <p>Generated by <a href="http://docutils.sourceforge.net/">Docutils</a>,
+                <a href="http://jinja.pocoo.org/">Jinja</a>
+                and <a href="http://pygments.org/">Pygments</a>.</p>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

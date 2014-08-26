@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>The Features of Pybtex</title>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type"></meta>
+    <link href="display.css" rel="stylesheet" type="text/css"></link>
+    <link href="pygments.css" rel="stylesheet" type="text/css"></link>
+</head>
+<body>
+    <div id="main">
+
+        <h1>The Features<span class="tail"> of Pybtex</span></h1>
+
+
+        <div id="toc">
+            <h2>Contents</h2>
+            <ul class="contents">
+    
+            <li><a href="#bibliography-formats">Bibliography formats</a></li>
+    
+            <li><a href="#bibliography-style-formats">Bibliography style formats</a></li>
+    
+            <li><a href="#output-formats">Output formats</a></li>
+    
+            </ul>
+        </div>
+
+        <div id="content">
+            <div class="section" id="bibliography-formats">
+<h2>Bibliography formats</h2>
+<div class="section" id="bibtex">
+<h3>BibTeX</h3>
+<p>BibTeX format is quite simple. Those who have used BibTeX should be already
+familiar with it. The others will probably catch the idea from the following
+example:</p>
+<div class="sourcecode"><pre>@BOOK{strunk-and-white,
+    author = &quot;Strunk, Jr., William and E. B. White&quot;,
+    title = &quot;The Elements of Style&quot;,
+    publisher = &quot;Macmillan&quot;,
+    edition = &quot;Third&quot;,
+    year = 1979
+}
+</pre></div>
+<p>Here is a <a class="reference external" href="http://www.miwie.org/tex-refs/html/bibtex-bib-files.html">more detailed description of the BibTeX format</a>.</p>
+</div>
+<div class="section" id="bibtexml">
+<h3>BibTeXML</h3>
+<p><a class="reference external" href="http://bibtexml.sourceforge.net">BibTeXML</a> format attempts to combine the
+simplicity of BibTeX format with the power of XML. Here is what the above
+BibTeX bibliography entry wolud look like:</p>
+<div class="sourcecode"><pre><span class="nt">&lt;bibtex:entry</span> <span class="na">id=</span><span class="s">&quot;strunk-and-white&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;bibtex:book&gt;</span>
+<span class="nt">&lt;bibtex:title&gt;</span>The Elements of Style<span class="nt">&lt;/bibtex:title&gt;</span>
+<span class="nt">&lt;bibtex:publisher&gt;</span>Macmillan<span class="nt">&lt;bibtex:publisher&gt;</span>
+<span class="nt">&lt;bibtex:edition&gt;</span>Third<span class="nt">&lt;/bibtex:edition&gt;</span>
+<span class="nt">&lt;bibtex:year&gt;</span>1979<span class="nt">&lt;/bibtex:year&gt;</span>
+<span class="nt">&lt;bibtex:author&gt;</span>
+        <span class="nt">&lt;bibtex:person&gt;</span>
+            <span class="nt">&lt;bibtex:first&gt;</span>William<span class="nt">&lt;/bibtex:first&gt;</span>
+            <span class="nt">&lt;bibtex:last&gt;</span>Strunk<span class="nt">&lt;/bibtex:last&gt;</span>
+            <span class="nt">&lt;bibtex:lineage&gt;</span>Jr.<span class="nt">&lt;/bibtex:lineage&gt;</span>
+        <span class="nt">&lt;/bibtex:person&gt;</span>
+        <span class="nt">&lt;bibtex:person&gt;</span>
+            <span class="nt">&lt;bibtex:first&gt;</span>E.<span class="nt">&lt;/bibtex:first&gt;</span>
+            <span class="nt">&lt;bibtex:middle&gt;</span>B.<span class="nt">&lt;/bibtex:first&gt;</span>
+            <span class="nt">&lt;bibtex:last&gt;</span>White<span class="nt">&lt;/bibtex:last&gt;</span>
+        <span class="nt">&lt;/bibtex:person&gt;</span>
+<span class="nt">&lt;/bibtex:author&gt;</span>
+<span class="nt">&lt;/bibtex:book&gt;</span>
+<span class="nt">&lt;/bibtex:entry&gt;</span>
+</pre></div>
+</div>
+<div class="section" id="yaml">
+<h3>YAML</h3>
+<p>We chose to create our own format to use with Pybtex. It is quite similar to
+<a class="reference external" href="http://bibtexml.sourceforge.net">BibTeXML</a>
+but based on <a class="reference external" href="http://yaml.org">YAML</a> instead of XML and therefore
+is much less verbose.</p>
+<div class="sourcecode"><pre><span class="l-Scalar-Plain">strunk-and-white</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">type</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">book</span>
+    <span class="l-Scalar-Plain">author</span><span class="p-Indicator">:</span>
+        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">first</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">William</span>
+          <span class="l-Scalar-Plain">last</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Strunk</span>
+          <span class="l-Scalar-Plain">lineage</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Jr.</span>
+        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">first</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">E.</span>
+          <span class="l-Scalar-Plain">middle</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">B.</span>
+          <span class="l-Scalar-Plain">last</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">White</span>
+    <span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">The Elements of Style</span>
+    <span class="l-Scalar-Plain">publisher</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Macmillan</span>
+    <span class="l-Scalar-Plain">edition</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Third</span>
+    <span class="l-Scalar-Plain">year</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">1979</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="bibliography-style-formats">
+<h2>Bibliography style formats</h2>
+<ul class="simple">
+<li>BibTeX <tt class="docutils literal">.bst</tt> files</li>
+<li>Pybtex own pythonic <a class="reference external" href="./style_api.html">style API</a></li>
+</ul>
+</div>
+<div class="section" id="output-formats">
+<h2>Output formats</h2>
+<p>Unlike BibTeX <tt class="docutils literal">.bst</tt> styles, which can only output LaTeX or whatever is
+hardcoded in them, Pybtex pythonic styles are output format agnostic and can
+produce:</p>
+<ul class="simple">
+<li>LaTeX</li>
+<li>plain text</li>
+<li>HTML (work in progress)</li>
+</ul>
+<p>Support for other formats can be added easily. If you really need it,
+please <a class="reference external" href="http://sourceforge.net/p/pybtex/bugs/new/">file a feature request</a>.</p>
+</div>
+
+        </div>
+        <div id="footer">
+            <hr />
+            
+            <div id="footer-left">
+
+                <p>Generated by <a href="http://docutils.sourceforge.net/">Docutils</a>,
+                <a href="http://jinja.pocoo.org/">Jinja</a>
+                and <a href="http://pygments.org/">Pygments</a>.</p>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

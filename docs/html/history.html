@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>The History of Pybtex</title>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type"></meta>
+    <link href="display.css" rel="stylesheet" type="text/css"></link>
+    <link href="pygments.css" rel="stylesheet" type="text/css"></link>
+</head>
+<body>
+    <div id="main">
+
+        <h1>The History<span class="tail"> of Pybtex</span></h1>
+
+
+        <div id="content">
+            <div class="section" id="version-0-18">
+<h2>Version 0.18</h2>
+<p>(released on July 6, 2014)</p>
+<ul>
+<li><p class="first">Pybtex is now fully case-insensitive (like BibTeX). As a consequence, IEEEtran styles now work corretly.</p>
+</li>
+<li><p class="first">Added <tt class="docutils literal"><span class="pre">--preserve-case</span></tt> optoin to <tt class="docutils literal"><span class="pre">pybtex-convert</span></tt> (by default all identifiers are converted to lower case).</p>
+</li>
+<li><p class="first">An erorr is reported if two citations have the same key but different case, like in BibTeX. (Example: ddt1999 and DDT1999).</p>
+</li>
+<li><p class="first">Fixed parsing unused bibliography entries with strings containing &#64; characters.</p>
+</li>
+<li><p class="first"><tt class="docutils literal">entry.max$</tt> constant is now set to 250, <tt class="docutils literal">global.max$</tt> is set to 20000, like in BibTeX.</p>
+</li>
+<li><p class="first">Added <tt class="docutils literal"><span class="pre">--strict</span></tt> option to <tt class="docutils literal"><span class="pre">pybtex-convert</span></tt> and <tt class="docutils literal"><span class="pre">pybtex-format</span></tt> (turns
+warning to errors).</p>
+</li>
+<li><p class="first">Strict mode is now enabled by default when using pybtex as a library
+(exceptions are raised on all errors instead of just printing warnings to
+stderr).</p>
+<p>Non-strict error handling is still enabled when using pybtex from the command
+line, for compatibility with BibTeX. Use <tt class="docutils literal"><span class="pre">--strict</span></tt> option if you don't
+like this.</p>
+</li>
+<li><p class="first">Added missing pybtex-format manpage.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="version-0-17">
+<h2>Version 0.17</h2>
+<p>(released on March 10, 2014)</p>
+<ul class="simple">
+<li>Added <tt class="docutils literal"><span class="pre">pybtex-format</span></tt> utility for formatting bibliography files as HTML,
+LaTeX, and other supported human-readable formats.</li>
+<li>Added <tt class="docutils literal"><span class="pre">--strict</span></tt> command line option to <tt class="docutils literal">pybtex</tt> (all warnings become errors).</li>
+<li>Added <tt class="docutils literal">alpha</tt> label style, and alpha and unsrtalpha formatting styles.</li>
+<li>Added support for <tt class="docutils literal">url</tt>, <tt class="docutils literal">eprint</tt>, <tt class="docutils literal">doi</tt>, and <tt class="docutils literal">pubmed</tt> fields in <tt class="docutils literal">unsrt</tt> style.</li>
+<li>Names with hyphens are now abbreviated correctly (&quot;Jean-Baptiste&quot; becomes &quot;J.-B.&quot;).</li>
+<li><tt class="docutils literal">width$</tt> now uses cmr10 font metrics, like in BibTeX. Non-latin characters are also supported.</li>
+<li>Pythonic style engine now supports <tt class="docutils literal">&#64;preamble</tt> commands.</li>
+<li>Warning on missing fields are now more human-readable.</li>
+<li>When writing BibTeX files, put entry key on the same line with entry type. Fixes warnings in Jabref.</li>
+<li>When using multiple <tt class="docutils literal">.bib</tt> files, macros defined in earlier files are available in subsequent ones (like in BibTeX).</li>
+<li>Fixed parsing <tt class="docutils literal">.bst</tt> files with lines consisting of a single % character.</li>
+<li>Fixed sorting entries without author in <tt class="docutils literal">author_year_title</tt> sorting style.</li>
+<li>Fixed broken <tt class="docutils literal">CaseInsensitiveDict.get()</tt>.</li>
+<li><tt class="docutils literal">CaseInsensitiveDict</tt> is now pickleable.</li>
+<li>Added support for registering plugins at runtime with
+<tt class="docutils literal">pybtex.plugin.register_plugin()</tt> - useful for using pybtex as a library.</li>
+</ul>
+<p>Many thanks to Matthias C. M. Troffaes for his numerous fixes and improvements!</p>
+</div>
+<div class="section" id="version-0-16">
+<h2>Version 0.16</h2>
+<p>(released on March 17, 2012)</p>
+<ul class="simple">
+<li>BibTeX <tt class="docutils literal">.bib</tt> and <tt class="docutils literal">.bst</tt> parsers were completely rewritten. They are now
+much faster and more BibTeX-compatible.</li>
+<li>Syntax errors and undefined strings in <tt class="docutils literal">.bib</tt> files now result in warnings
+instead of errors, like in BibTeX.</li>
+<li>Unused entries in <tt class="docutils literal">.bib</tt> files are now skipped, like in BibTeX.</li>
+<li>The case of entry keys is now preserved (in previous versions they were
+converted to lowercase).</li>
+<li>Pythonic style engine now supports sorting.</li>
+<li>Pythonic style engine: fixed nested optional() blocks.</li>
+<li>Fixed parsing of some names with a Last part but no von part.</li>
+<li>Fixed processing of brace-level-one &quot;special characters&quot; in <tt class="docutils literal">purify$</tt> BibTeX
+built-in function.</li>
+<li>Added proper error messages on encoding errors in .bib files.</li>
+<li>The default encoding is now UTF-8 on all platforms.</li>
+<li><tt class="docutils literal"><span class="pre">pybtex-convert</span></tt> now preserves the order of entries in BibTeX and BibTeXML
+files.</li>
+</ul>
+<p>The following changes were contributed by Matthias C. M. Troffaes:</p>
+<ul class="simple">
+<li>Fixed first_of behavior when non-empty child is followed by a child that has a
+missing field.</li>
+<li>Fixed crossref lookups when key is not lower case.</li>
+<li>Completed unsrt and plain python styles: they now contain all entry types.</li>
+<li>Added doctree backend for rendering into a tree of docutils nodes.</li>
+<li>Added support for non-string backends.</li>
+</ul>
+</div>
+<div class="section" id="version-0-15">
+<h2>Version 0.15</h2>
+<p>(released on February 1, 2011)</p>
+<ul class="simple">
+<li>Changed license from GPL-3 to MIT.</li>
+<li>Added support for <a class="reference external" href="./plugins.html">setuptools plugins</a>.</li>
+<li>BibTeX parser: fixed whitespace normalization in concatenated strings.</li>
+<li>BibTeX parser: when parsing multiple BibTeX files, macros defined in
+earlier files are now available to all subsequent files, like in BibTeX.</li>
+<li>BibTeX <tt class="docutils literal">.bst</tt> interpreter now prints warnings on missing entries, like
+BibTeX, instead of raising a <tt class="docutils literal">KeyError</tt>.</li>
+<li><tt class="docutils literal">call.type$</tt> BibTeX built-in function now uses <tt class="docutils literal">default.entry</tt> for
+unknown entry types, like in BibTeX.</li>
+<li><tt class="docutils literal">substring$</tt> now accepts start=0 and returns an empty string.</li>
+<li><tt class="docutils literal">change.case$</tt>: fixed incorrect formatting of strings starting with special
+characters with &quot;t&quot; format.</li>
+<li>Fixed abbreviation of names starting with special characters or
+non-alphabetic characters.</li>
+<li>Fixed incorrect entry order and duplicated entries with <tt class="docutils literal"><span class="pre">\nocite{*}</span></tt>.</li>
+<li>Added more detailed error messages for already defined variables in <tt class="docutils literal">.bst</tt>
+files.</li>
+</ul>
+</div>
+<div class="section" id="version-0-14-1">
+<h2>Version 0.14.1</h2>
+<p>(released on September 30, 2010)</p>
+<ul class="simple">
+<li>Added missing custom_fixers directory to the tarball - needed only for
+converting the sources to Python 3.</li>
+</ul>
+</div>
+<div class="section" id="version-0-14">
+<h2>Version 0.14</h2>
+<p>(released on September 20, 2010)</p>
+<ul class="simple">
+<li>BibTeX writer: fixed quoting <tt class="docutils literal">&quot;</tt> (double quote) characters.</li>
+<li>BibTeX parser now produces human-readable error messages on unread macros.</li>
+<li>Added error messages on missing data in .aux files.</li>
+<li>Improved performance on very long name lists.</li>
+<li>Added support for Python 3.</li>
+</ul>
+</div>
+<div class="section" id="version-0-13-2">
+<h2>Version 0.13.2</h2>
+<p>(released on February 26, 2010)</p>
+<ul class="simple">
+<li>BibTeX parser: fixed a bug with parsing strings containing braces, like &quot;Error in {DNA}&quot;.</li>
+</ul>
+</div>
+<div class="section" id="version-0-13-1">
+<h2>Version 0.13.1</h2>
+<p>(released on February 18, 2010)</p>
+<ul class="simple">
+<li>Fixed <tt class="docutils literal">ImportError: No module named kpathsea</tt> errors. One of the source files
+was missing from <tt class="docutils literal"><span class="pre">pybtex-0.13.tar.bz2</span></tt> for some strange reason. Sorry about that. ;)</li>
+</ul>
+</div>
+<div class="section" id="version-0-13">
+<h2>Version 0.13</h2>
+<p>(released on February 14, 2010)</p>
+<ul class="simple">
+<li>Implemented <cite>--min-crossrefs</cite> option.</li>
+<li>All command line options of the original BibTeX are not supported.</li>
+<li>Pybtex now respects <cite>BSTINPUTS</cite>, <cite>BIBINPUTS</cite> and <cite>TEXMFOUTPUT</cite> environment
+variables.</li>
+<li>BibTeX bibliography parser now strips excessive whitespace from fields, like
+BibTeX does.</li>
+</ul>
+</div>
+<div class="section" id="version-0-12">
+<h2>Version 0.12</h2>
+<p>(released on November 21, 2009)</p>
+<ul class="simple">
+<li>Pybtex now works correctly with <tt class="docutils literal">\input{filename}</tt> in LaTeX files.</li>
+<li>Added a proper <tt class="docutils literal">change.case$</tt> BibTeX function instead of a stub.</li>
+<li>Added <tt class="docutils literal"><span class="pre">-e</span></tt>/<tt class="docutils literal"><span class="pre">--encoding</span></tt> command line option.</li>
+<li>Fixed non-working <tt class="docutils literal"><span class="pre">--bibtex-encoding</span></tt> option.</li>
+<li>Added proper error messages on missing plugins, file IO errors, some BibTeX
+interpreter errors, etc.</li>
+<li>Fallback to backslash-encoding when printing messages to the console - to
+make them printable regardless of the locale.</li>
+</ul>
+</div>
+<div class="section" id="version-0-11">
+<h2>Version 0.11</h2>
+<p>(released on September 7, 2009)</p>
+<ul class="simple">
+<li>Made <tt class="docutils literal">text.lentgh$</tt> and <tt class="docutils literal">text.prefix$</tt> BibTeX built-in functions treat
+braces and TeX special characters properly (like the original BibTeX
+functions do).</li>
+<li>Changed <tt class="docutils literal">purify$</tt> to replace ties and hyphens by spaces.</li>
+<li>Fixed a bug in <tt class="docutils literal">substring$</tt> with negative start values.</li>
+<li>Fixed .bst file grammar to allow underscores in identifiers.</li>
+<li>BibTeX name parser: ties are now treated as whitespace when splitting name
+parts.</li>
+<li>Implemented BibTeX-like text wrapping - the resulting .bbl output should now
+be byte-for-byte identical to that of BibTeX in most cases.</li>
+</ul>
+</div>
+<div class="section" id="version-0-10">
+<h2>Version 0.10</h2>
+<p>(released on August 24, 2009)</p>
+<ul class="simple">
+<li>Added support for multiple bibliography databases.</li>
+<li>Pythonic bibliography formatter: added helper functions to simplify writing
+BibTeX-like name formatting styles in Python. Added a tool for automatic
+conversion of BibTeX <tt class="docutils literal"><span class="pre">{ll}{,</span> ff}</tt>-like patterns into Python.</li>
+<li>BibTeX parser: added missing characters to the caracter set of the valid
+identifiers.</li>
+<li>BibTeX parser: a comma is now allowed between the last field and the closing
+brace.</li>
+<li>BibTeX name parser: when splitting name parts into words, whitespace at brace
+level &gt; 0 is now ignored.</li>
+<li>BibTeX name parser: fixed parsing of single-word lowercase names and complex
+von names, like in &quot;Andrea de Leeuw van Weenen&quot;.</li>
+<li>Fixed broken <tt class="docutils literal"><span class="pre">--label-style</span></tt> and <tt class="docutils literal"><span class="pre">--name-style</span></tt> options.</li>
+<li>Added (autogenerated) manpages.</li>
+<li>Added this changelog.</li>
+</ul>
+</div>
+<div class="section" id="version-0-9">
+<h2>Version 0.9</h2>
+<p>(released on August 17, 2009)</p>
+<ul class="simple">
+<li>Implemented <tt class="docutils literal"><span class="pre">\citation{*}</span></tt>.</li>
+<li>Implemented crossrefs.</li>
+<li>BibTeX .bib parser now supports newlines inside strings.</li>
+<li>Fixed: .bib filename from .aux file was ignored.</li>
+<li>Fixed incorrect argument passing to codecs.open().</li>
+<li>Fixed incorrect whitespace handling in the name parsing code.</li>
+</ul>
+</div>
+<div class="section" id="version-20090402">
+<h2>Version 20090402</h2>
+<p>(released on February 04, 2009)</p>
+<ul class="simple">
+<li>Fixed yet more encoding-related bugs.</li>
+<li>Cleaned up some old nasty code, updated the documentation, added more tests.</li>
+</ul>
+</div>
+<div class="section" id="version-20080918">
+<h2>Version 20080918</h2>
+<p>(released on September 18, 2008)</p>
+<ul class="simple">
+<li>Added HTML backend. The pythonic bibliography formatter can now produce LaTeX,
+HTML, and plaintext.</li>
+<li>BibTeXML writer now indents the resulting XML.</li>
+<li>Removed the dependency on external elementtree.</li>
+<li>Improved the interface of the <tt class="docutils literal"><span class="pre">pybtex-convert</span></tt> script. It is just
+<tt class="docutils literal">convert foo.bib foo.yaml</tt> now.</li>
+<li>Fixed several bugs in the BibTeX interpreter.</li>
+<li>Fixed several encoding-related bugs.</li>
+</ul>
+</div>
+<div class="section" id="version-20070513">
+<h2>Version 20070513</h2>
+<p>(released on May 13, 2007)</p>
+<ul class="simple">
+<li>Added an interpreter for the BibTeX stack language. Pybtex now supports
+BibTeX style files.</li>
+<li>Added a YAML bibliography format (both input and output).</li>
+<li>Improved processing of names with {braces}.</li>
+<li>Added support for <tt class="docutils literal">&#64;preamble</tt> to both BibTeX parser and writer.</li>
+<li>Introduced an experimental pythonic template language to make bibliography
+formatting easier with a more functional-oriented approach.</li>
+<li>Added support for incollection entries to the experimentl pythonic bibliography
+style.</li>
+<li>cElementTree is now used for BibTeXML parsing, if present.</li>
+<li>Added some documentation files (finally).</li>
+</ul>
+</div>
+<div class="section" id="version-20060416">
+<h2>Version 20060416</h2>
+<p>(released on April 16, 2006)</p>
+<ul class="simple">
+<li>Added BibTeX and BibTeXML formatters for bibliography databases. Added a
+database conversion tool.</li>
+<li>Improved name splitting in the BibTeX parser.</li>
+<li>Locale encoding is now used by default.</li>
+<li>Added <tt class="docutils literal">richtext.Check</tt> class to simplify formatting of optional bibliography
+fields.</li>
+<li>Added support for booklet and inbook entry types to the experimentl pythonic
+bibliography style.</li>
+</ul>
+</div>
+<div class="section" id="version-20060402">
+<h2>Version 20060402</h2>
+<p>(released on April 2, 2006)</p>
+<ul class="simple">
+<li>Added initial Unicode support and input/output encodings.</li>
+<li>Introduced output backends to make bibliography styles markup-independent.
+Added LaTeX and Plaintext backends.</li>
+<li>Improved BibTeXML parser, add support for pre-parsed names (<tt class="docutils literal">&lt;bibtex:first&gt;</tt>,
+<tt class="docutils literal">&lt;bibtex:middle&gt;</tt> and so on).</li>
+<li>Added default macros for month names to the BibTeX parser.</li>
+<li>Added an experimental <tt class="docutils literal">richtext.Phrase</tt> (former <tt class="docutils literal">Pack</tt> class (former
+<tt class="docutils literal">Packer</tt> class)) class to make creating sentences and delimited lists
+easier.</li>
+<li>Added experimental support for pluggable name and label styles to the
+pythonic bibliogrphy formatter.</li>
+<li>Made Pybtex work on Windows by renaming aux.py to auxfile.py. Duh.</li>
+</ul>
+</div>
+<div class="section" id="version-0-1">
+<h2>Version 0.1</h2>
+<p>(released on March 4, 2006)</p>
+<p>Initial release. This version already has a basic BibTeX .bib parser, BibTeXML
+parser and a proof-of-concept pythonic bibliography formatter.</p>
+</div>
+
+        </div>
+        <div id="footer">
+            <hr />
+            
+            <div id="footer-left">
+
+                <p>Generated by <a href="http://docutils.sourceforge.net/">Docutils</a>,
+                <a href="http://jinja.pocoo.org/">Jinja</a>
+                and <a href="http://pygments.org/">Pygments</a>.</p>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

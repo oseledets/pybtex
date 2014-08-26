@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>The Friendly Manual of Pybtex</title>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type"></meta>
+    <link href="display.css" rel="stylesheet" type="text/css"></link>
+    <link href="pygments.css" rel="stylesheet" type="text/css"></link>
+</head>
+<body>
+    <div id="main">
+
+        <h1>The Friendly Manual<span class="tail"> of Pybtex</span></h1>
+
+
+        <div id="toc">
+            <h2>Contents</h2>
+            <ul class="contents">
+    
+            <li><a href="#using-pybtex-instead-of-bibtex">Using Pybtex instead of BibTeX</a></li>
+    
+            <li><a href="#using-pybtex-with-experimental-pythonic-bibliography-styles">Using Pybtex with (experimental) pythonic bibliography styles</a></li>
+    
+            <li><a href="#using-pybtex-as-a-bibliography-files-converter">Using Pybtex as a bibliography files converter</a></li>
+    
+            <li><a href="#using-pybtex-programmatically">Using Pybtex programmatically</a></li>
+    
+            </ul>
+        </div>
+
+        <div id="content">
+            <div class="section" id="using-pybtex-instead-of-bibtex">
+<h2>Using Pybtex instead of BibTeX</h2>
+<p>Pybtex is compatible with BibTeX — just type <tt class="docutils literal">pybtex</tt> instead of
+<tt class="docutils literal">bibtex</tt>:</p>
+<div class="sourcecode"><pre>latex foo
+pybtex foo
+latex foo
+latex foo
+</pre></div>
+<p>Unlike BibTeX, Pybtex supports multiple bibliography data formats. If you run</p>
+<div class="sourcecode"><pre>pybtex -f bibtexml foo
+</pre></div>
+<p>Pybtex will read bibliography data in BibTeXML format from <tt class="docutils literal">foo.bibtexml</tt>
+file instead of <tt class="docutils literal">foo.bib</tt>.</p>
+</div>
+<div class="section" id="using-pybtex-with-experimental-pythonic-bibliography-styles">
+<h2>Using Pybtex with (experimental) pythonic bibliography styles</h2>
+<p>Pybtex supports bibliography styles written in Python, although this feature
+is still in development. If you want to give it a try, first examine the
+sources in the <tt class="docutils literal">pybtex/style</tt> subdirectory, then run:</p>
+<div class="sourcecode"><pre>pybtex -l python foo
+</pre></div>
+<p>As of now the only pythonic style available is
+<tt class="docutils literal">pybtex/style/formatting/unsrt.py</tt>. It is a partial and very incomplete port
+of <tt class="docutils literal">unsrt.bst</tt>.</p>
+<p>Pythonic styles are markup-independent, it is possible to format the
+bibliography as HTML or plain text:</p>
+<div class="sourcecode"><pre>pybtex -e pybtex -b html foo
+pybtex -e pybtex -b plaintext foo
+</pre></div>
+<p>Label and name styes are configurable:</p>
+<div class="sourcecode"><pre>pybtex -e pybtex --label-style number --name-style last_first foo
+</pre></div>
+<p>Label and name styles are defined in <tt class="docutils literal">pybtex/style/labels.py</tt> and
+<tt class="docutils literal">pybtex/style/names.py</tt>, look there for details.</p>
+</div>
+<div class="section" id="using-pybtex-as-a-bibliography-files-converter">
+<h2>Using Pybtex as a bibliography files converter</h2>
+<p>Pybtex has a simple <tt class="docutils literal"><span class="pre">pybtex-convert</span></tt> utility, which can convert bibliography
+files between supported formats:</p>
+<div class="sourcecode"><pre>pybtex-convert foo.bib foo.yaml
+</pre></div>
+<p>The conversion is not always lossless due to limitations of storage formats:</p>
+<ul class="simple">
+<li>Native BibTeX format stores personal names as single strings, while BibTexML
+and Pybtex' YAML format store first name, last name, and other name parts
+seprately.</li>
+<li>BibTeXML format does not support LaTeX preambles.</li>
+<li>The order of keys is not preserved during the conversion (this may be fixed some day).</li>
+</ul>
+</div>
+<div class="section" id="using-pybtex-programmatically">
+<h2>Using Pybtex programmatically</h2>
+<div class="section" id="using-the-bibtex-parser">
+<h3>Using the BibTeX parser</h3>
+<div class="sourcecode"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pybtex.database.input</span> <span class="kn">import</span> <span class="n">bibtex</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parser</span> <span class="o">=</span> <span class="n">bibtex</span><span class="o">.</span><span class="n">Parser</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bib_data</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_file</span><span class="p">(</span><span class="s">&#39;examples/foo.bib&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bib_data</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">[u&#39;ruckenstein-diffusion&#39;, u&#39;viktorov-metodoj&#39;, u&#39;test-inbook&#39;, u&#39;test-booklet&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bib_data</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="s">&#39;ruckenstein-diffusion&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s">&#39;title&#39;</span><span class="p">]</span>
+<span class="go">Predicting the Diffusion Coefficient in Supercritical Fluids</span>
+</pre></div>
+<p>(to be continued)</p>
+</div>
+</div>
+
+        </div>
+        <div id="footer">
+            <hr />
+            
+            <div id="footer-left">
+
+                <p>Generated by <a href="http://docutils.sourceforge.net/">Docutils</a>,
+                <a href="http://jinja.pocoo.org/">Jinja</a>
+                and <a href="http://pygments.org/">Pygments</a>.</p>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
